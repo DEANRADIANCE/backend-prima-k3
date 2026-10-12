@@ -1,5 +1,7 @@
 node_modules/
 .env
+.env.local
+.env.production
 .DS_Store
 *.log
 npm-debug.log*
@@ -9,3 +11,4 @@ yarn-error.log*
 .idea/
 dist/
 build/
+.vercel/

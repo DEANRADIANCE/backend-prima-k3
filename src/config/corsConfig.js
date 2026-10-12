@@ -3,14 +3,14 @@
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Daftar allowed origins
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:5173', // Vite dev server
-      'http://localhost:8080'
-    ];
+    const allowedOrigins = process.env.CORS_ORIGINS 
+      ? process.env.CORS_ORIGINS.split(',')
+      : [
+          'http://localhost:3000',
+          'http://localhost:5173',
+          'http://localhost:8080'
+        ];
     
-    // Allow requests dengan no origin (mobile apps, curl, postman)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -20,7 +20,7 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   credentials: true,
-  maxAge: 86400 // Cache preflight selama 24 jam
+  maxAge: 86400
 };
 
 module.exports = corsOptions;

@@ -2,7 +2,10 @@
   "name": "expressjs-api_primak3",
   "version": "1.0.0",
   "description": "Simple Express.js API with clean folder structure",
-  "main": "src/server.js",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18.x"
+  },
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
