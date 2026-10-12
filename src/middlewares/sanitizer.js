@@ -90,6 +90,36 @@ const validateProductInput = [
     .toInt()
 ];
 
+const validateMedicalRecordInput = [
+  body('patientName')
+    .trim()
+    .isLength({ min: 2, max: 100 })
+    .withMessage('Nama pasien harus 2-100 karakter'),
+
+  body('examinationDate')
+    .isISO8601()
+    .withMessage('Tanggal periksa harus berupa tanggal yang valid (YYYY-MM-DD)'),
+
+  body('vitalSigns')
+    .isObject({ strict: true })
+    .withMessage('Tanda vital harus berupa object'),
+
+  body('diagnosis')
+    .trim()
+    .isLength({ min: 2, max: 255 })
+    .withMessage('Diagnosa harus 2-255 karakter'),
+
+  body('examiningDoctor')
+    .trim()
+    .isLength({ min: 2, max: 100 })
+    .withMessage('Dokter pemeriksa harus 2-100 karakter'),
+
+  body('status')
+    .trim()
+    .isIn(['menunggu', 'selesai', 'dibatalkan'])
+    .withMessage('Status harus menunggu, selesai, atau dibatalkan')
+];
+
 // Error handler untuk validation
 const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
@@ -113,5 +143,6 @@ module.exports = {
   validateId,
   validateUserInput,
   validateProductInput,
+  validateMedicalRecordInput,
   handleValidationErrors
 };

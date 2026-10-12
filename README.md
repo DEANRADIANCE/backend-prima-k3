@@ -13,14 +13,17 @@ API sederhana menggunakan Express.js dengan struktur folder yang rapi, terorgani
 │   │   └── rateLimiter.js            # Rate limiting
 │   ├── controllers/      # Request handlers
 │   │   ├── userController.js
-│   │   └── productController.js
+│   │   ├── productController.js
+│   │   └── medicalRecordController.js
 │   ├── services/         # Business logic
 │   │   ├── userService.js
-│   │   └── productService.js
+│   │   ├── productService.js
+│   │   └── medicalRecordService.js
 │   ├── routes/           # API routes
 │   │   ├── index.js
 │   │   ├── userRoutes.js
-│   │   └── productRoutes.js
+│   │   ├── productRoutes.js
+│   │   └── medicalRecordRoutes.js
 │   ├── middlewares/      # Custom middlewares
 │   │   ├── errorHandler.js           # Global error handling
 │   │   ├── sanitizer.js              # Input validation & sanitization
@@ -83,6 +86,13 @@ Server akan berjalan di `http://localhost:3000`
 - **PUT** `/api/products/:id` - Update product
 - **DELETE** `/api/products/:id` - Hapus product
 
+### Medical Records
+- **GET** `/api/medical-records` - Ambil semua riwayat medis
+- **GET** `/api/medical-records/:id` - Ambil riwayat medis berdasarkan ID
+- **POST** `/api/medical-records` - Buat riwayat medis baru
+- **PUT** `/api/medical-records/:id` - Update riwayat medis
+- **DELETE** `/api/medical-records/:id` - Hapus riwayat medis
+
 ## Contoh Request
 
 ### Buat User Baru
@@ -102,6 +112,13 @@ curl -X POST http://localhost:3000/api/products \
 ### Ambil Semua Users
 ```bash
 curl http://localhost:3000/api/users
+```
+
+### Buat Riwayat Medis Baru
+```bash
+curl -X POST http://localhost:3000/api/medical-records \
+  -H "Content-Type: application/json" \
+  -d '{"patientName":"Andi Wijaya","examinationDate":"2026-10-12","vitalSigns":{"bloodPressure":"120/80 mmHg","heartRate":"80 bpm","temperature":"36.8 C","respiratoryRate":"18 x/menit"},"diagnosis":"Demam","examiningDoctor":"dr. Budi Santoso","status":"selesai"}'
 ```
 
 ## Format Response
