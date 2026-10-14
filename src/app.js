@@ -2,6 +2,7 @@
 // File ini mengatur middleware dan routing
 
 const express = require('express');
+const cors = require('cors');
 const routes = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
 const secureHeaders = require('./middlewares/secureHeaders');
@@ -9,11 +10,15 @@ const logger = require('./middlewares/logger');
 const timeoutHandler = require('./middlewares/timeout');
 const limiter = require('./config/rateLimiter');
 const { sanitizeInput } = require('./middlewares/sanitizer');
+const corsOptions = require('./config/corsConfig');
 
 const app = express();
 
 // Setup logging
 logger(app);
+
+// CORS
+app.use(cors(corsOptions));
 
 // Security headers
 secureHeaders(app);

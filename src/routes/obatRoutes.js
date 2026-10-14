@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const obatController = require('../controllers/obatController');
+const { protect } = require('../middlewares/auth');
 
-router.get('/', obatController.getAllObat);
-router.get('/:id', obatController.getObatById);
-router.post('/', obatController.createObat);
-router.put('/:id', obatController.updateObat);
-router.delete('/:id', obatController.deleteObat);
+router.get('/', protect, obatController.getAllObat);
+router.get('/:id', protect, obatController.getObatById);
+router.post('/', protect, obatController.createObat);
+router.put('/:id', protect, obatController.updateObat);
+router.delete('/:id', protect, obatController.deleteObat);
 
 module.exports = router;
