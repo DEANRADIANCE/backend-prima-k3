@@ -13,3 +13,4 @@ dist/
 build/
 .vercel/
 supabase-migration.sql
+supabase-rls-policies.sql

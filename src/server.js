@@ -1,6 +1,8 @@
 // Entry point aplikasi Express.js
 // File ini menjalankan server HTTP
 
+require('dotenv').config(); // Load .env before any other module reads process.env
+
 const app = require('./app');
 const config = require('./config/config');
 
