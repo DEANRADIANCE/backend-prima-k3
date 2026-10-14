@@ -7,5 +7,9 @@ module.exports = {
   apiVersion: 'v1',
   requestTimeout: parseInt(process.env.REQUEST_TIMEOUT) || 30000,
   maxJsonSize: process.env.MAX_JSON_SIZE || '10kb',
-  maxUrlencodedSize: process.env.MAX_URLENCODED_SIZE || '10kb'
+  maxUrlencodedSize: process.env.MAX_URLENCODED_SIZE || '10kb',
+  supabase: {
+    url: process.env.SUPABASE_URL,
+    anonKey: process.env.SUPABASE_ANON_KEY
+  }
 };

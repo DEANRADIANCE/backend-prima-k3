@@ -1,90 +1,47 @@
-// Controller untuk User
-// Berisi logic untuk menangani request user
+const userModel = require('../models/userModel');
 
-const userService = require('../services/userService');
-
-// Ambil semua users
-const getAllUsers = async (req, res, next) => {
+const getAllUsers = async (req, res) => {
   try {
-    const users = await userService.getAllUsers();
-    res.json({
-      success: true,
-      data: users
-    });
+    const data = await userModel.getAllUsers();
+    res.json({ success: true, data });
   } catch (error) {
-    next(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Ambil user berdasarkan ID
-const getUserById = async (req, res, next) => {
+const getUserById = async (req, res) => {
   try {
-    const user = await userService.getUserById(req.params.id);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User tidak ditemukan'
-      });
-    }
-    res.json({
-      success: true,
-      data: user
-    });
+    const data = await userModel.getUserById(req.params.id);
+    res.json({ success: true, data });
   } catch (error) {
-    next(error);
+    res.status(404).json({ success: false, message: error.message });
   }
 };
 
-// Buat user baru
-const createUser = async (req, res, next) => {
+const createUser = async (req, res) => {
   try {
-    const newUser = await userService.createUser(req.body);
-    res.status(201).json({
-      success: true,
-      message: 'User berhasil dibuat',
-      data: newUser
-    });
+    const data = await userModel.createUser(req.body);
+    res.status(201).json({ success: true, data });
   } catch (error) {
-    next(error);
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
-// Update user berdasarkan ID
-const updateUser = async (req, res, next) => {
+const updateUser = async (req, res) => {
   try {
-    const updatedUser = await userService.updateUser(req.params.id, req.body);
-    if (!updatedUser) {
-      return res.status(404).json({
-        success: false,
-        message: 'User tidak ditemukan'
-      });
-    }
-    res.json({
-      success: true,
-      message: 'User berhasil diupdate',
-      data: updatedUser
-    });
+    const data = await userModel.updateUser(req.params.id, req.body);
+    res.json({ success: true, data });
   } catch (error) {
-    next(error);
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
-// Hapus user berdasarkan ID
-const deleteUser = async (req, res, next) => {
+const deleteUser = async (req, res) => {
   try {
-    const deleted = await userService.deleteUser(req.params.id);
-    if (!deleted) {
-      return res.status(404).json({
-        success: false,
-        message: 'User tidak ditemukan'
-      });
-    }
-    res.json({
-      success: true,
-      message: 'User berhasil dihapus'
-    });
+    await userModel.deleteUser(req.params.id);
+    res.json({ success: true, message: 'User deleted' });
   } catch (error) {
-    next(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
