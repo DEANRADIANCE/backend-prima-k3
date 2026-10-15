@@ -118,7 +118,7 @@ Pendaftaran publik melalui `/api/auth/signup` selalu membuat role `user`. Role `
 
 ## Menjalankan Aplikasi
 
-Backend membutuhkan Node.js 22 atau lebih baru. Pastikan environment deployment menggunakan versi tersebut sebelum menjalankan `npm start`.
+Backend menggunakan Node.js 18 agar sesuai dengan runtime Railway. Supabase SDK dipatok ke versi yang kompatibel dengan Node.js 18.
 
 ### Development mode (auto-reload)
 ```bash
