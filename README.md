@@ -89,18 +89,22 @@ API RESTful untuk sistem manajemen klinik kesehatan menggunakan Express.js denga
 npm install
 ```
 
-## Setup Database (Supabase)
+## Setup Supabase
 
-1. Buat project baru di [Supabase](https://supabase.com)
-2. Copy SQL dari `supabase-migration.sql` ke SQL Editor di Supabase dashboard
-3. Copy `.env.example` ke `.env` dan isi dengan kredensial Supabase Anda:
+Gunakan project Supabase Prima K3 yang sudah ada; tidak perlu membuat project baru. Salin `.env.example` menjadi `.env`, lalu isi `SUPABASE_URL` dan `SUPABASE_SERVICE_ROLE_KEY` dengan kredensial backend project yang sama:
 
 ```env
 SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your-anon-key-here
-PORT=3000
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+PORT=5000
 NODE_ENV=development
+REQUEST_TIMEOUT=30000
+MAX_JSON_SIZE=10kb
+MAX_URLENCODED_SIZE=10kb
+CORS_ORIGINS=http://localhost:3000,http://localhost:5173,http://localhost:8080
 ```
+
+Jangan commit `.env`, membagikan service-role key, atau menggunakan key tersebut di frontend. Terapkan `supabase_migration.sql` hanya jika skema yang diperlukan belum tersedia di project yang ada.
 
 ## Menjalankan Aplikasi
 
@@ -114,7 +118,7 @@ npm run dev
 npm start
 ```
 
-Server akan berjalan di `http://localhost:3000`
+Server akan berjalan di `http://localhost:5000` secara default. Port dan CORS origins dapat disesuaikan melalui environment variables.
 
 ## API Endpoints
 
@@ -280,12 +284,13 @@ Server akan berjalan di `http://localhost:3000`
 
 ```env
 NODE_ENV=development      # development atau production
-PORT=3000                 # Port server
+PORT=5000                 # Port server
 SUPABASE_URL=             # Supabase project URL
-SUPABASE_ANON_KEY=        # Supabase anonymous key
+SUPABASE_SERVICE_ROLE_KEY= # Server-only Supabase service-role key
 REQUEST_TIMEOUT=30000     # Request timeout dalam ms
 MAX_JSON_SIZE=10kb        # Max JSON body size
 MAX_URLENCODED_SIZE=10kb  # Max URL-encoded body size
+CORS_ORIGINS=             # Allowed origins, dipisah koma
 ```
 
 ## Database Schema

@@ -3,6 +3,7 @@ const router = express.Router();
 const bookingController = require('../controllers/bookingController');
 const { protect } = require('../middlewares/auth');
 
+router.get('/', protect, bookingController.getAllBooking);
 router.get('/konseling', protect, bookingController.getBookingKonseling);
 router.get('/penunjang', protect, bookingController.getBookingPenunjang);
 router.get('/:id', protect, bookingController.getBookingById);

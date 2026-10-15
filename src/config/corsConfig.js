@@ -1,17 +1,11 @@
 // CORS configuration
 // Mengatur Cross-Origin Resource Sharing untuk keamanan
 
+const config = require('./config');
+
 const corsOptions = {
   origin: (origin, callback) => {
-    const allowedOrigins = process.env.CORS_ORIGINS 
-      ? process.env.CORS_ORIGINS.split(',')
-      : [
-          'http://localhost:3000',
-          'http://localhost:5173',
-          'http://localhost:8080'
-        ];
-    
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || config.corsOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Origin tidak diizinkan oleh CORS'));

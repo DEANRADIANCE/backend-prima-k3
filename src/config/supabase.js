@@ -7,10 +7,12 @@ if (!supabaseUrl || !supabaseServiceKey) {
   console.warn('⚠️  Supabase credentials missing. Check .env file.');
 }
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey || '', {
-  auth: {
-    persistSession: false
-  }
-});
+const supabase = supabaseUrl && supabaseServiceKey
+  ? createClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      persistSession: false
+    }
+  })
+  : null;
 
 module.exports = supabase;

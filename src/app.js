@@ -11,6 +11,7 @@ const timeoutHandler = require('./middlewares/timeout');
 const limiter = require('./config/rateLimiter');
 const { sanitizeInput } = require('./middlewares/sanitizer');
 const corsOptions = require('./config/corsConfig');
+const config = require('./config/config');
 
 const app = express();
 
@@ -30,10 +31,10 @@ app.use(limiter);
 app.use(timeoutHandler);
 
 // Middleware untuk parsing JSON (dengan size limit)
-app.use(express.json({ limit: '10kb' }));
+app.use(express.json({ limit: config.maxJsonSize }));
 
 // Middleware untuk parsing URL-encoded data (dengan size limit)
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: config.maxUrlencodedSize }));
 
 // Sanitize input
 app.use(sanitizeInput);

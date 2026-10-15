@@ -2,6 +2,13 @@ const supabase = require('../config/supabase');
 
 const protect = async (req, res, next) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({
+        success: false,
+        message: 'Supabase belum dikonfigurasi. Isi variabel .env terlebih dahulu.'
+      });
+    }
+
     const authHeader = req.headers.authorization;
     
     if (!authHeader || !authHeader.startsWith('Bearer ')) {

@@ -1,6 +1,14 @@
 const authModel = require('../models/authModel');
+const supabase = require('../config/supabase');
 
 const login = async (req, res) => {
+  if (!supabase) {
+    return res.status(503).json({
+      success: false,
+      message: 'Supabase belum dikonfigurasi. Isi variabel .env terlebih dahulu.'
+    });
+  }
+
   try {
     const { email, password } = req.body;
     const data = await authModel.login(email, password);
