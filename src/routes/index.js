@@ -43,7 +43,6 @@ router.use('/ruangan', ruanganRoutes);
 router.use('/artikel', artikelRoutes);
 router.use('/flyer', flyerRoutes);
 router.use('/bookings', bookingRoutes);
-router.use('/booking/konseling', bookingRoutes);
-router.use('/booking/penunjang', bookingRoutes);
+router.use('/booking', bookingRoutes);
 
 module.exports = router;

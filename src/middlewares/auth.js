@@ -46,4 +46,14 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+const requireAdmin = (req, res, next) => {
+  if (req.user?.user_metadata?.role !== 'admin') {
+    return res.status(403).json({
+      success: false,
+      message: 'Akses hanya tersedia untuk admin.'
+    });
+  }
+  next();
+};
+
+module.exports = { protect, requireAdmin };

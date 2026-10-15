@@ -21,7 +21,11 @@ const sanitizeInput = (req, res, next) => {
     
     const sanitized = {};
     for (const [key, value] of Object.entries(obj)) {
-      sanitized[key] = typeof value === 'string' ? sanitizeString(value) : sanitizeObject(value);
+      if (typeof value === 'string') {
+        sanitized[key] = key === 'password' ? value : sanitizeString(value);
+      } else {
+        sanitized[key] = sanitizeObject(value);
+      }
     }
     return sanitized;
   };

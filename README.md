@@ -104,7 +104,17 @@ MAX_URLENCODED_SIZE=10kb
 CORS_ORIGINS=http://localhost:3000,http://localhost:5173,http://localhost:8080
 ```
 
-Jangan commit `.env`, membagikan service-role key, atau menggunakan key tersebut di frontend. Terapkan `supabase_migration.sql` hanya jika skema yang diperlukan belum tersedia di project yang ada.
+Jangan commit `.env`, membagikan service-role key, atau menggunakan key tersebut di frontend. Terapkan `supabase_migration.sql` pada project Supabase sebelum menggunakan fitur akun, stok obat, SIP, atau booking.
+
+Setelah menerapkan migration, buat akun admin pertama kali dari direktori backend:
+
+```bash
+npm run seed:admin
+```
+
+Di development, kredensial awalnya `admin` / `admin` dengan email `admin@primak3.id`. Untuk production, set `ADMIN_PASSWORD` yang kuat dan `ADMIN_EMAIL` sebelum menjalankan provisioning; jangan gunakan password demo, dan segera ganti password awal. Skrip tidak mengubah password akun admin yang sudah ada.
+
+Pendaftaran publik melalui `/api/auth/signup` selalu membuat role `user`. Role `admin` hanya dibuat melalui provisioning backend, dan pengelolaan endpoint `/api/users` dibatasi untuk admin.
 
 ## Menjalankan Aplikasi
 
@@ -127,6 +137,7 @@ Server akan berjalan di `http://localhost:5000` secara default. Port dan CORS or
 
 ### Auth
 - **POST** `/api/auth/login` - Login user
+- **POST** `/api/auth/signup` - Daftar user baru (role `user`)
 - **GET** `/api/auth/profile` - Ambil profile user (perlu auth)
 - **POST** `/api/auth/logout` - Logout user
 

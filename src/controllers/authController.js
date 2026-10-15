@@ -10,11 +10,36 @@ const login = async (req, res) => {
   }
 
   try {
-    const { email, password } = req.body;
-    const data = await authModel.login(email, password);
-    res.json({ success: true, data });
+    const { username, email, password } = req.body;
+    const authData = await authModel.login({ username, email, password });
+    res.json({
+      success: true,
+      data: {
+        access_token: authData.session.access_token,
+        refresh_token: authData.session.refresh_token,
+        user: authData.user,
+        profile: authData.profile
+      }
+    });
   } catch (error) {
     res.status(401).json({ success: false, message: error.message });
+  }
+};
+
+const signup = async (req, res) => {
+  if (!supabase) {
+    return res.status(503).json({
+      success: false,
+      message: 'Supabase belum dikonfigurasi. Isi variabel .env terlebih dahulu.'
+    });
+  }
+
+  try {
+    const profile = await authModel.signup(req.body);
+    res.status(201).json({ success: true, data: profile });
+  } catch (error) {
+    const conflict = /already|duplicate|unique/i.test(error.message);
+    res.status(conflict ? 409 : 400).json({ success: false, message: error.message });
   }
 };
 
@@ -39,6 +64,7 @@ const logout = async (req, res) => {
 
 module.exports = {
   login,
+  signup,
   profile,
   logout
 };

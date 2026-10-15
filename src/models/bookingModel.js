@@ -22,7 +22,7 @@ const getBookingByType = async (type) => {
   const { data, error } = await supabase
     .from('booking')
     .select('*')
-    .eq('type', type);
+    .eq('jenis_layanan', type);
   if (error) throw error;
   return data;
 };

@@ -1,5 +1,22 @@
 -- Supabase Migration: Create all tables for Prima K3 System
 
+-- Auth profile for application users. Public signup always receives the user role.
+CREATE TABLE IF NOT EXISTS users (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  username VARCHAR(32) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  full_name VARCHAR(120) NOT NULL,
+  role VARCHAR(20) NOT NULL DEFAULT 'user' CHECK (role IN ('admin', 'user')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Users can view their own profile" ON users;
+CREATE POLICY "Users can view their own profile"
+  ON users FOR SELECT
+  USING (auth.uid() = id);
+
 -- 1. Table: pasien
 CREATE TABLE IF NOT EXISTS pasien (
   id BIGSERIAL PRIMARY KEY,
@@ -95,6 +112,7 @@ CREATE TABLE IF NOT EXISTS obat (
   id BIGSERIAL PRIMARY KEY,
   nama VARCHAR(255) NOT NULL,
   kategori VARCHAR(100),
+  stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0),
   komposisi TEXT,
   jenis_obat VARCHAR(50),
   dosis_umum TEXT,
@@ -108,6 +126,8 @@ CREATE TABLE IF NOT EXISTS obat (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE obat ADD COLUMN IF NOT EXISTS stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0);
 
 -- 6. Table: alat_medis
 CREATE TABLE IF NOT EXISTS alat_medis (
@@ -138,9 +158,18 @@ CREATE TABLE IF NOT EXISTS nakes (
   layanan VARCHAR(255),
   foto TEXT,
   jadwal JSONB,
+  status_sip VARCHAR(30) NOT NULL DEFAULT 'Aktif',
+  masa_berlaku_sip VARCHAR(100) NOT NULL DEFAULT '31 Desember 2028',
+  alamat_kerja TEXT NOT NULL DEFAULT 'Klinik Pratama ANRI',
+  dokumen_sip_url TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE nakes ADD COLUMN IF NOT EXISTS status_sip VARCHAR(30) NOT NULL DEFAULT 'Aktif';
+ALTER TABLE nakes ADD COLUMN IF NOT EXISTS masa_berlaku_sip VARCHAR(100) NOT NULL DEFAULT '31 Desember 2028';
+ALTER TABLE nakes ADD COLUMN IF NOT EXISTS alamat_kerja TEXT NOT NULL DEFAULT 'Klinik Pratama ANRI';
+ALTER TABLE nakes ADD COLUMN IF NOT EXISTS dokumen_sip_url TEXT;
 
 -- 8. Table: perizinan
 CREATE TABLE IF NOT EXISTS perizinan (
@@ -201,6 +230,8 @@ CREATE TABLE IF NOT EXISTS ruangan (
 CREATE TABLE IF NOT EXISTS booking (
   id BIGSERIAL PRIMARY KEY,
   pasien_id BIGINT REFERENCES pasien(id) ON DELETE CASCADE,
+  nama_pasien VARCHAR(255),
+  telepon VARCHAR(20),
   jenis_layanan VARCHAR(100),
   tanggal_booking DATE,
   jam_booking TIME,
@@ -209,6 +240,9 @@ CREATE TABLE IF NOT EXISTS booking (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE booking ADD COLUMN IF NOT EXISTS nama_pasien VARCHAR(255);
+ALTER TABLE booking ADD COLUMN IF NOT EXISTS telepon VARCHAR(20);
 
 -- Create indexes for performance (skip if already exist)
 DO $$

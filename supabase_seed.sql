@@ -30,6 +30,10 @@ INSERT INTO obat (id, nama, kategori, komposisi, jenis_obat, dosis_umum, indikas
 (3, 'Ibuprofen 400mg', 'Nyeri', 'Ibuprofen 400 mg', 'Tablet', 'Dewasa: 1 tablet 3 kali sehari setelah makan', 'Meredakan nyeri otot, sakit gigi, dismenore, dan peradangan sendi', 'Nyeri ulu hati, mual, dispepsia, pusing ringan', 'Hindari bagi penderita tukak lambung aktif dan riwayat pendarahan cerna', 'Simpan pada wadah tertutup rapat pada suhu kamar (20-25°C)', 'Tersedia', 'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=600')
 ON CONFLICT (id) DO NOTHING;
 
+UPDATE obat
+SET stock = CASE WHEN status = 'Tersedia' THEN 50 ELSE 0 END
+WHERE stock = 0;
+
 -- Insert Alat Medis
 INSERT INTO alat_medis (id, nama, kategori, penjelasan, fungsi_utama, cara_penggunaan, peringatan, penyimpanan, status, foto) VALUES
 (1, 'Elektrokardiograf (EKG 12-Lead)', 'Diagnostik', 'Perangkat medis diagnostik berstandar rumah sakit untuk merekam aktivitas kelistrikan otot jantung pasien secara non-invasif.', 'Mendeteksi aritmia, iskemia, infark miokard akut, dan kelainan ritme konduksi jantung pegawai.', 'Pasang elektroda pada keempat ekstremitas dan keenam titik prekordial dada dengan gel konduktif, lalu rekam ritme 12-lead.', 'PERINGATAN: Pastikan pasien melepaskan benda berbahan logam dan ponsel agar tidak menimbulkan artefak elektromagnetik.', 'Simpan di Ruang Tindakan pada suhu 20-25°C dengan kabel probe tertata rapi tanpa lekukan patah.', 'Tersedia', 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600'),
