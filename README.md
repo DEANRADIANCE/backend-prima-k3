@@ -118,6 +118,8 @@ Pendaftaran publik melalui `/api/auth/signup` selalu membuat role `user`. Role `
 
 ## Menjalankan Aplikasi
 
+Backend membutuhkan Node.js 22 atau lebih baru. Pastikan environment deployment menggunakan versi tersebut sebelum menjalankan `npm start`.
+
 ### Development mode (auto-reload)
 ```bash
 npm run dev
